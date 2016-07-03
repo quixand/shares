@@ -43,11 +43,14 @@ sub calculatePurchaseCost {
 	my $shareCost = $quantity * $sharePurchasePrice / 100;
 	print "Share Cost: £$shareCost\n";
 	# add commission and stamp duty 1%
-	$shareCost += $shareCost / 100;
-	print "with commission & stamp duty (1%): £$shareCost\n";
+	my $onePercent = $shareCost / 100 / 2;
+	$shareCost += $onePercent;
+	print "with commission & stamp duty (1%:$onePercent): £$shareCost\n";
 	# add transaction fee
-	$shareCost += 12.50;
+	$shareCost += $transactionFee;
 	print "with transaction fee: £$shareCost\n\n";
+	my $totalFees = $transactionFee + $onePercent;
+	print "Total fees: $totalFees\n\n";
 	
 	$totalPurchaseCost = $shareCost;
 }
@@ -56,10 +59,13 @@ sub calculateSaleCost {
 	print "Sale Cost\n";
 	my $shareValue = $quantity * $shareSalePrice / 100;
 	print "Share Sale Value: £$shareValue\n";
-	$shareValue -= 12.50;
+	$shareValue -= $transactionFee;
 	print "less transaction fee: £$shareValue\n";
-	$shareValue -= $shareValue / 100 / 2;
-	print "less commssion fee: £$shareValue\n\n";
+	my $commission = $shareValue / 100 / 2;
+	$shareValue -= $commission;
+	print "less commission fee\@$transactionTax($commission): £$shareValue\n";
+	my $totalSaleFees = $commission + $transactionFee;
+	print "Total fees: $totalSaleFees\n\n";
 
 	$totalSaleReturn = $shareValue;
 }
